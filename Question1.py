@@ -1,13 +1,8 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Sep 26 21:14:31 2018
-
-@author: brand
-"""
+############################# Question 1 #############################
 import numpy as np
 import scipy.spatial.distance as dist
 
-######################### Question 1 #############################
+#each row of the given matrix
 Alice = np.array([5,3,4,4,None], dtype = 'float')
 Alicia = np.array([3,1,2,3,None], dtype = 'float')
 Bob = np.array([4,3,4,3,5], dtype = 'float')
@@ -15,8 +10,8 @@ Mary = np.array([3,2,1,5,4], dtype = 'float')
 Sue = np.array([1,6,5,2,1], dtype = 'float')
 
 names = np.array(["Alice","Alicia","Bob","Mary","Sue"])
-Matrix = np.array([Alice,Alicia,Bob,Mary,Sue])
-subMatrix = Matrix[1:,:-1]
+Matrix = np.array([Alice,Alicia,Bob,Mary,Sue]) #2D array
+subMatrix = Matrix[1:,:-1] #removes first row and column of Matrix
 
 U,s,V = np.linalg.svd(subMatrix)
 s_inv = np.linalg.inv(np.diag(s))
@@ -60,7 +55,6 @@ closest2D = min(AA_2D,AB_2D,AM_2D,AS_2D)
 closest4D = min(AA_4D,AB_4D,AM_4D,AS_4D)
 
 print()
-
 for i in range(len(eucs_2D)):
     if closest2D == eucs_2D[i]:
         print("Closest in 2D = ", names[i+1])

@@ -1,12 +1,7 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Sep 26 21:14:31 2018
-
-@author: brand
-"""
+############################# Question 2 #############################
 import numpy as np
 
-######################### Question 2 #############################
+#a,b,c,d correspond to rows 1,2,3,4 of the matrix A
 a = np.array([1,2,3], dtype = 'float')
 b = np.array([2,3,4], dtype = 'float')
 c = np.array([4,5,6], dtype = 'float')
