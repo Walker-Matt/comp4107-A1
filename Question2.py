@@ -1,0 +1,24 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Sep 26 21:14:31 2018
+
+@author: brand
+"""
+import numpy as np
+
+######################### Question 2 #############################
+a = np.array([1,2,3], dtype = 'float')
+b = np.array([2,3,4], dtype = 'float')
+c = np.array([4,5,6], dtype = 'float')
+d = np.array([1,1,1], dtype = 'float')
+
+A = np.array([a,b,c,d])
+
+U,s,V = np.linalg.svd(A)
+
+print("U = ")
+print(U)
+print("s = ")
+print(np.diag(s))
+print("V = ")
+print(V)
