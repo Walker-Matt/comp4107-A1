@@ -46,25 +46,48 @@ def visualize(matrix):
             else:
                 line = line + " #"
         print(line)
+        
+#Populates sample arrays with 50 images of desired digit
+def randomDigitSet(digit):
+    digitSet = np.zeros((50,28,28))
+    count = 0
+    while(count < 50):
+        index = random.randint(0, 59999)
+        if(trainingLabels[index] == digit):
+            digitSet[count] = trainingImages[index]
+            count = count + 1
+    return digitSet
+        
 
-#Random sample array and labels
+#Random sample arrays for each digit
 #Initialized at proper sizes with zeros
-A = np.zeros((50,28,28))
-A_labels = np.zeros((50), np.int)
+A0 = randomDigitSet(0)
+A1 = randomDigitSet(1)
+A2 = randomDigitSet(2)
+A3 = randomDigitSet(3)
+A4 = randomDigitSet(4)
+A5 = randomDigitSet(5)
+A6 = randomDigitSet(6)
+A7 = randomDigitSet(7)
+A8 = randomDigitSet(8)
+A9 = randomDigitSet(9)
 
-#Randomly populate sample array and label array
-for i in range(50):
-    index = random.randint(0, 59999)
-    A[i] = trainingImages[index]
-    A_labels[i] = trainingLabels[index]
-    
 #Just proof that the sample exists, and is random
-visualize(A[0])
-print(A_labels[0])
+visualize(A0[0])
+print("0")
 
-#SVD of the sample space
-#Gives us the subspaces of a digit
-U,s,V = np.linalg.svd(A)
+#SVD of the each sample space
+#Gives us the subspaces for each digit
+U0,s0,V0 = np.linalg.svd(A0)
+U1,s1,V1 = np.linalg.svd(A1)
+U2,s2,V2 = np.linalg.svd(A2)
+U3,s3,V3 = np.linalg.svd(A3)
+U4,s4,V4 = np.linalg.svd(A4)
+U5,s5,V5 = np.linalg.svd(A5)
+U6,s6,V6 = np.linalg.svd(A6)
+U7,s7,V7 = np.linalg.svd(A7)
+U8,s8,V8 = np.linalg.svd(A8)
+U9,s9,V9 = np.linalg.svd(A9)
 
 #residual = 
 
