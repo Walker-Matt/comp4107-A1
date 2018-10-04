@@ -49,14 +49,21 @@ def visualize(matrix):
         
 #Populates sample arrays with 50 images of desired digit
 def randomDigitSet(digit):
-    digitSet = np.zeros((50,28,28))
+    #digitSet = np.zeros((50,28,28))
+    digitSet = np.linspace(0,783,784)
     count = 0
     while(count < 50):
         index = random.randint(0, 59999)
         if(trainingLabels[index] == digit):
-            digitSet[count] = trainingImages[index]
+            image = np.transpose(trainingImages[index])
+            tempArray = np.array([])
+            for i in range(len(image)):
+                tempArray = np.append(tempArray, image[i])
+            digitSet = np.vstack((digitSet,tempArray))
+            #digitSet[count] = trainingImages[index]
             count = count + 1
-    return digitSet
+    digitSet = digitSet[1:len(digitSet)]
+    return np.transpose(digitSet)
         
 
 #Random sample arrays for each digit
@@ -72,48 +79,104 @@ A7 = randomDigitSet(7)
 A8 = randomDigitSet(8)
 A9 = randomDigitSet(9)
 
-#Just proof that the samples exist, and are random
-visualize(A0[0])
-print("0")
-visualize(A1[0])
-print("1")
-visualize(A2[0])
-print("2")
-visualize(A3[0])
-print("3")
-visualize(A4[0])
-print("4")
-visualize(A5[0])
-print("5")
-visualize(A6[0])
-print("6")
-visualize(A7[0])
-print("7")
-visualize(A8[0])
-print("8")
-visualize(A9[0])
-print("9")
+##Just proof that the samples exist, and are random
+#visualize(A0)#[0])
+#print("0")
+#visualize(A1[0])
+#print("1")
+#visualize(A2[0])
+#print("2")
+#visualize(A3[0])
+#print("3")
+#visualize(A4[0])
+#print("4")
+#visualize(A5[0])
+#print("5")
+#visualize(A6[0])
+#print("6")
+#visualize(A7[0])
+#print("7")
+#visualize(A8[0])
+#print("8")
+#visualize(A9[0])
+#print("9")
 
+def getU(sampleSpace, size):
+    U, s, V = np.linalg.svd(sampleSpace[0:size])
+    return U
+
+def residual(ident, U, z):
+    UUt = np.matmul(U,np.transpose(U))
+    print("identity = ", ident.shape)
+    print("UUt = ", UUt.shape)
+    diff = ident - UUt
+    diffZ = np.matmul(diff,z)
+    return np.linalg.norm(diffZ, ord=2)
+
+#zVals = np.append([])
+#for i in range(1000):
+#    index = random.randint(0, 9999) #random int to get unknown digit
+#    z = testImages[index]           #unknown digit
+#    z_label = testLabels[index]     #label of unknown digit
+    
+percent = np.array([])
+
+for k in range(1,52):
+    U0 = getU(A0, k)
+    U1 = getU(A1, k)
+    U2 = getU(A2, k)
+    U3 = getU(A3, k)
+    U4 = getU(A4, k)
+    U5 = getU(A5, k)
+    U6 = getU(A6, k)
+    U7 = getU(A7, k)
+    U8 = getU(A8, k)
+    U9 = getU(A9, k)
+    
+    correct = 0
+    identity = np.identity(k)      #identity matrix for k x k
+    U = np.array([U0,U1,U2,U3,U4,U5,U6,U7,U8,U9])
+    
+    for j in range(len(testImages)):
+        image = testImages[j]
+        z_label = testLabels [j]
+        residuals = np.array([])
+        
+        z = np.transpose(image)
+        tempArray = np.array([])
+        for i in range(len(z)):
+            tempArray = np.append(tempArray, image[i])
+        z = tempArray
+        
+        for u in U:
+            res = residual(identity,u,z)
+            residuals = np.append(residuals,res)
+        minPos = residuals.argmin()
+        if minPos == z_label:
+            correct = correct + 1
+    per = correct/len(testImages)
+    percent = np.append(percent,per)
+    
+    
+    
 #SVD of the each sample space
 #Gives us the subspaces for each digit
-U0,s0,V0 = np.linalg.svd(A0)
-U1,s1,V1 = np.linalg.svd(A1)
-U2,s2,V2 = np.linalg.svd(A2)
-U3,s3,V3 = np.linalg.svd(A3)
-U4,s4,V4 = np.linalg.svd(A4)
-U5,s5,V5 = np.linalg.svd(A5)
-U6,s6,V6 = np.linalg.svd(A6)
-U7,s7,V7 = np.linalg.svd(A7)
-U8,s8,V8 = np.linalg.svd(A8)
-U9,s9,V9 = np.linalg.svd(A9)
+#U0,s0,V0 = np.linalg.svd(A0)
+#U1,s1,V1 = np.linalg.svd(A1)
+#U2,s2,V2 = np.linalg.svd(A2)
+#U3,s3,V3 = np.linalg.svd(A3)
+#U4,s4,V4 = np.linalg.svd(A4)
+#U5,s5,V5 = np.linalg.svd(A5)
+#U6,s6,V6 = np.linalg.svd(A6)
+#U7,s7,V7 = np.linalg.svd(A7)
+#U8,s8,V8 = np.linalg.svd(A8)
+#U9,s9,V9 = np.linalg.svd(A9)
 
-identity = np.identity(28)      #identity matrix for 28x28
-index = random.randint(0, 9999) #random int to get unknown digit
-z = testImages[index]           #unknown digit
-z_label = testLabels[index]     #label of unknown digit
+
 
 #residual = 
 
+    
 
 
 

@@ -24,7 +24,8 @@ s = np.diag(s)
 
 sV = np.matmul(s[0:2,0:2],V[0:2,:]) #first two rows/columns of s and only first two rows of V but all columns
 A2 = np.matmul(U[:,0:2],sV) #first two columns of U but all rows
-print("A2 = ", A2)
+print("A2:")
+print(A2)
 
 norm = np.linalg.norm(A-A2, ord=2)
 print()
