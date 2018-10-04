@@ -72,9 +72,27 @@ A7 = randomDigitSet(7)
 A8 = randomDigitSet(8)
 A9 = randomDigitSet(9)
 
-#Just proof that the sample exists, and is random
+#Just proof that the samples exist, and are random
 visualize(A0[0])
 print("0")
+visualize(A1[0])
+print("1")
+visualize(A2[0])
+print("2")
+visualize(A3[0])
+print("3")
+visualize(A4[0])
+print("4")
+visualize(A5[0])
+print("5")
+visualize(A6[0])
+print("6")
+visualize(A7[0])
+print("7")
+visualize(A8[0])
+print("8")
+visualize(A9[0])
+print("9")
 
 #SVD of the each sample space
 #Gives us the subspaces for each digit
@@ -88,6 +106,11 @@ U6,s6,V6 = np.linalg.svd(A6)
 U7,s7,V7 = np.linalg.svd(A7)
 U8,s8,V8 = np.linalg.svd(A8)
 U9,s9,V9 = np.linalg.svd(A9)
+
+identity = np.identity(28)      #identity matrix for 28x28
+index = random.randint(0, 9999) #random int to get unknown digit
+z = testImages[index]           #unknown digit
+z_label = testLabels[index]     #label of unknown digit
 
 #residual = 
 
