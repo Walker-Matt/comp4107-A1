@@ -102,7 +102,7 @@ A9 = randomDigitSet(9)
 #print("9")
 
 def getU(sampleSpace, size):
-    U, s, V = np.linalg.svd(sampleSpace[0:size])
+    U, s, V = np.linalg.svd(sampleSpace[0:size], full_matrices = False)
     return U
 
 def residual(ident, U, z):

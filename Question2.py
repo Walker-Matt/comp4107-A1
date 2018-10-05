@@ -9,7 +9,7 @@ d = np.array([1,1,1], dtype = 'float')
 
 A = np.array([a,b,c,d])
 
-U,s,V = np.linalg.svd(A)
+U,s,V = np.linalg.svd(A, full_matrices = False)
 
 print("U = ")
 print(U)

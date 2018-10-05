@@ -13,7 +13,7 @@ names = np.array(["Alice","Alicia","Bob","Mary","Sue"])
 Matrix = np.array([Alice,Alicia,Bob,Mary,Sue]) #2D array
 subMatrix = Matrix[1:,:-1] #removes first row and column of Matrix
 
-U,s,V = np.linalg.svd(subMatrix)
+U,s,V = np.linalg.svd(subMatrix, full_matrices = False)
 s_inv = np.linalg.inv(np.diag(s))
 Us_inv = np.matmul(U[:,0:2],s_inv[0:2,0:2])
 
