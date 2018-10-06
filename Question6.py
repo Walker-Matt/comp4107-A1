@@ -156,36 +156,3 @@ for k in range(1,52):
             correct = correct + 1
     per = correct/len(testImages)
     percent = np.append(percent,per)
-    
-    
-    
-#SVD of the each sample space
-#Gives us the subspaces for each digit
-#U0,s0,V0 = np.linalg.svd(A0)
-#U1,s1,V1 = np.linalg.svd(A1)
-#U2,s2,V2 = np.linalg.svd(A2)
-#U3,s3,V3 = np.linalg.svd(A3)
-#U4,s4,V4 = np.linalg.svd(A4)
-#U5,s5,V5 = np.linalg.svd(A5)
-#U6,s6,V6 = np.linalg.svd(A6)
-#U7,s7,V7 = np.linalg.svd(A7)
-#U8,s8,V8 = np.linalg.svd(A8)
-#U9,s9,V9 = np.linalg.svd(A9)
-
-
-
-#residual = 
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
