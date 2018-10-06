@@ -39,7 +39,7 @@ testLabels = parseFile(testLabelsFile)
 def randomDigitSet(digit):
     digitSet = np.zeros(784)   #produced just so np.vstack() works (removed after)
     count = 0
-    while(count < 50):
+    while(count < 1000):
         index = random.randint(0, 59999)
         if(trainingLabels[index] == digit):
             #converts image into single column
@@ -51,7 +51,7 @@ def randomDigitSet(digit):
             count = count + 1
     digitSet = digitSet[1:len(digitSet)]    #removes first generic row of zeros
     return np.transpose(digitSet)           #switches rows back to columns
-        
+
 #Random sample arrays for each digit
 #Initialized at proper sizes with zeros
 A0 = randomDigitSet(0)
@@ -65,17 +65,17 @@ A7 = randomDigitSet(7)
 A8 = randomDigitSet(8)
 A9 = randomDigitSet(9)
 
-identity = np.identity(784)
+identity = np.identity(784)     # identity matrix 784x784
+basis = 50                      # max number of basis images
 percentages = np.array([])
-basis = 50      # max number of basis images
 zIndex = np.array([], dtype = "int")
 
 for i in range(numZ):
     index = random.randint(0, 9999)     #random int to get unknown digit
     zIndex = np.append(zIndex,index)    #stores random indices
 
-def getU(sampleSpace, size):
-    U, s, V = np.linalg.svd(sampleSpace[:,0:size], full_matrices = False)
+def getU(sampleSpace):
+    U, s, V = np.linalg.svd(sampleSpace, full_matrices = False)
     return U
 
 def residual(U, z):
@@ -84,18 +84,30 @@ def residual(U, z):
     diffZ = np.matmul(diff,z)
     return np.linalg.norm(diffZ, ord=2)
 
+U0 = getU(A0)
+U1 = getU(A1)
+U2 = getU(A2)
+U3 = getU(A3)
+U4 = getU(A4)
+U5 = getU(A5)
+U6 = getU(A6)
+U7 = getU(A7)
+U8 = getU(A8)
+U9 = getU(A9)
+
 for k in range(1,52):
-    U0 = getU(A0, k)
-    U1 = getU(A1, k)
-    U2 = getU(A2, k)
-    U3 = getU(A3, k)
-    U4 = getU(A4, k)
-    U5 = getU(A5, k)
-    U6 = getU(A6, k)
-    U7 = getU(A7, k)
-    U8 = getU(A8, k)
-    U9 = getU(A9, k)
-    U = np.array([U0,U1,U2,U3,U4,U5,U6,U7,U8,U9])
+    # selects k columns from the U_j matrices
+    U0_k = U0[:,0:k]
+    U1_k = U1[:,0:k]
+    U2_k = U2[:,0:k]
+    U3_k = U3[:,0:k]
+    U4_k = U4[:,0:k]
+    U5_k = U5[:,0:k]
+    U6_k = U6[:,0:k]
+    U7_k = U7[:,0:k]
+    U8_k = U8[:,0:k]
+    U9_k = U9[:,0:k]
+    U = np.array([U0_k,U1_k,U2_k,U3_k,U4_k,U5_k,U6_k,U7_k,U8_k,U9_k])
     
     correct = 0
     for j in range(numZ):
@@ -111,16 +123,17 @@ for k in range(1,52):
             tempArray = np.append(tempArray, imageT[i])
         z = np.transpose(tempArray)
         
+        #computes res values of z image against each U_j
         for u in U:
             res = residual(u,z)
             residuals = np.append(residuals,res)
-        minPos = residuals.argmin()
+        minPos = residuals.argmin()         # min res is classification of digit
         if minPos == z_label:
-            correct = correct + 1
+            correct = correct + 1       # tests correctness against known label of z
     percent = 100*correct/numZ
     percentages = np.append(percentages,percent)
 
-x = np.linspace(1,basis+1,basis+1,dtype="int")      
+x = np.linspace(1,basis+1,basis+1,dtype="int")      # x-axis for graph (# of basic images)
 for i in range(percentages.size):
     print(x[i], "Basis Images", " = ", percentages[i], "%")
 
