@@ -47,17 +47,31 @@ def visualize(matrix):
                 line = line + " #"
         print(line)
         
+#Unpacks column stacked images
+#From 784x1 to 28x28
+def unpack(U):
+    image = np.zeros((28,28))
+    count = 0
+    for i in range(27):
+        for j in range(27):
+            image[i][j] = U[count]
+            count = count + 1
+    return image
+        
 #Populates sample arrays with 50 images of desired digit
 def randomDigitSet(digit):
-    digitSet = np.zeros((50,28,28))
+    digitSet = np.zeros((50,784), np.int)
     count = 0
     while(count < 50):
         index = random.randint(0, 59999)
         if(trainingLabels[index] == digit):
-            digitSet[count] = trainingImages[index]
+            image = np.transpose(trainingImages[index])
+            columnStack = image[0]
+            for i in range(1,28):
+                columnStack = np.append(columnStack, image[i])
+            digitSet[count] = columnStack
             count = count + 1
     return digitSet
-        
 
 #Random sample arrays for each digit
 A0 = randomDigitSet(0)
@@ -81,8 +95,9 @@ def getU(sampleSpace, size):
 
 #Computes the residual between
 #Left-singular vectors and unknown digit
-def residual(U, z):
-    ident = np.identity(28)
+def residual(subspace, k, z):
+    U = getU(subspace, k)
+    ident = np.identity(k)
     UUt = np.matmul(U,np.transpose(U))
     diff = ident - UUt
     diffZ = np.matmul(diff,z)
@@ -96,7 +111,7 @@ def averageResidual(subspace, k, z):
     for i in range(0, k):
         res = residual(U[i], z)
         residuals.append(res)
-    average = np.sum(residuals) / len(residuals)
+    average = np.sum(residuals)
     return average
 
 #Gathers lowest residual from set of subspaces
@@ -105,8 +120,8 @@ def lowestResidual(k, z):
     lowestRes = 1
     label = 0
     for i in range(len(subspaces)):
-        if(averageResidual(subspaces[i], k, z) < lowestRes):
-            lowestRes = averageResidual(subspaces[i], k, z)
+        if(residual(subspaces[i], k, z) < lowestRes):
+            lowestRes = residual(subspaces[i], k, z)
             label = i
     return label
 
@@ -118,20 +133,22 @@ def isCorrect(k, z, label):
         return False
     
 #Returns the percentage of correct classifications
-def percentage(k):
+def percentage(size, k):
     correct = 0
-    for i in range(100):
+    for i in range(size):
+        #z = testImages[i][0]
+        #for j in range(1,28):
+        #    z = np.append(z, testImages[i][j])
         if(isCorrect(k, testImages[i], testLabels[i])):
             correct = correct + 1
-    return correct / 100
+    return correct / size
 
 #Testing for output of results
-print("Test size of 100")
-for i in range(1,16):
-    print(str(i) + " base images: " + repr(percentage(i)*100) + "%")
-    
-
-
+def experiment(size):
+    print("Test size of " + str(25))
+    for i in range(1,size+1):
+        print(str(i) + " base images: " + repr(percentage(size, i)*100) + "%")
+        
 
 
 
