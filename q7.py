@@ -6,7 +6,7 @@ from matplotlib.pyplot import figure
 import time
 
 k = 14
-threshold = np.array([200,250,300,350,400,450,500,550,600,650,700,750,800])
+threshold = np.array([200,250,300,350,400,450,500,550,600,610])#650,700,750,800])
 X = np.array([0.2, 0.5, 0.8])
 
 data = pd.read_csv("ml-latest-small//ratings.csv", header = 0)
@@ -49,15 +49,18 @@ for x in X:
         moviePos = movieDict[movieID[t][0]]
         testSet[user][moviePos] = rating[t][0]
     
-#    for col in range(numMovies):
-#        colAvg = np.mean(trainSet[:,col])
-#        for row in range(numUsers):
-#            if trainSet[row,col] == 0:
-#                trainSet[row,col] = colAvg;
-    
+
     for thresh in threshold: 
         start = time.time()
         A = trainSet[0:thresh]      # uses first "threshold" number of rows for original matrix
+        
+        # changes zero values to the average rating of that given user    
+        for row in range(thresh):
+            rowAvg = np.mean(trainSet[row,:])
+            for col in range(numMovies):
+                if trainSet[row,col] == 0:
+                    trainSet[row,col] = rowAvg;
+        
         U,s,V = np.linalg.svd(A, full_matrices = False)
         U_k = U[:,0:k]
         s_k = np.diag(s[0:k])
