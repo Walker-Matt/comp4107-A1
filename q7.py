@@ -53,13 +53,13 @@ for x in X:
         start = time.time()
         A = trainSet[0:thresh]      # uses first "threshold" number of rows for original matrix
         
-        # changes zero values to the average rating of that given user    
+        # normalizes A matrix by changing zero values to the average rating of given movie    
         for row in range(thresh):
             rowAvg = np.mean(trainSet[row,:])
             for col in range(numMovies):
                 if A[row,col] == 0:
-                    A[row,col] = rowAvg;
-        
+                    A[row,col] = rowAvg
+                                                            
         U,s,V = np.linalg.svd(A, full_matrices = False)
         U_k = U[:,0:k]
         s_k = np.diag(s[0:k])
@@ -73,7 +73,7 @@ for x in X:
             U_k = np.vstack((U_k, newFold))
         
         s_sqrt = np.sqrt(s_k)
-        Us = np.matmul(U_k, np.transpose(s_sqrt))    
+        Us = np.matmul(U_k, np.transpose(s_sqrt))
         sV = np.matmul(s_sqrt, V_k)
         
         prediction = np.zeros((numUsers, numMovies))
@@ -83,7 +83,7 @@ for x in X:
             rowAvg = np.mean(trainSet[row,:])
             i = Us[row,:]
             j = sV[:,col]
-            prediction[row][col] = rowAvg + np.dot(i,j)    
+            prediction[row][col] = rowAvg + np.dot(i,j)
         MAE = sum(sum(np.absolute(prediction-testSet)))/len(test)
         MAEvals = np.append(MAEvals, MAE)
         end = time.time()
