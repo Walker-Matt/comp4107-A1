@@ -6,7 +6,7 @@ from matplotlib.pyplot import figure
 import time
 
 k = 14
-threshold = np.array([200,250,300,350,400,450,500,550,600,610])#650,700,750,800])
+threshold = np.array([200,250,300,350,400,450,500,550,600])#650,700,750,800])
 X = np.array([0.2, 0.5, 0.8])
 
 data = pd.read_csv("ml-latest-small//ratings.csv", header = 0)
