@@ -49,11 +49,11 @@ for x in X:
         moviePos = movieDict[movieID[t][0]]
         testSet[user][moviePos] = rating[t][0]
     
-    for col in range(numMovies):
-        colAvg = np.mean(trainSet[:,col])
-        for row in range(numUsers):
-            if trainSet[row,col] == 0:
-                trainSet[row,col] = colAvg;
+#    for col in range(numMovies):
+#        colAvg = np.mean(trainSet[:,col])
+#        for row in range(numUsers):
+#            if trainSet[row,col] == 0:
+#                trainSet[row,col] = colAvg;
     
     for thresh in threshold: 
         start = time.time()
