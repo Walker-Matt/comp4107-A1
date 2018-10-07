@@ -19,7 +19,7 @@ for i in range(1401):
     else:
         A = np.vstack((A,row)) #builds the matrix by stacking row-by-row
 
-U,s,V = np.linalg.svd(A)
+U,s,V = np.linalg.svd(A, full_matrices = False)
 s = np.diag(s)
 
 sV = np.matmul(s[0:2,0:2],V[0:2,:]) #first two rows/columns of s and only first two rows of V but all columns

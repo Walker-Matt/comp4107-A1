@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
 import time
 
-k = 2
-threshold = np.array([300,350,400,450,500,550,600,650,700,750,800])
+k = 14
+threshold = np.array([200,250,300,350,400,450,500,550,600,650,700,750,800])
 X = np.array([0.2, 0.5, 0.8])
 
 data = pd.read_csv("ml-latest-small//ratings.csv", header = 0)
@@ -49,6 +49,12 @@ for x in X:
         moviePos = movieDict[movieID[t][0]]
         testSet[user][moviePos] = rating[t][0]
     
+    for col in range(numMovies):
+        colAvg = np.mean(trainSet[:,col])
+        for row in range(numUsers):
+            if trainSet[row,col] == 0:
+                trainSet[row,col] = colAvg;
+    
     for thresh in threshold: 
         start = time.time()
         A = trainSet[0:thresh]      # uses first "threshold" number of rows for original matrix
@@ -90,21 +96,21 @@ timeVals = timeVals[1:]
 
 plt.figure()
 figure(num=None, figsize=(8, 6), dpi=80, facecolor='w', edgecolor='k')
-plt.plot(threshold,yvals[0], label = "x = 0.2")
-plt.plot(threshold,yvals[1], label = "x = 0.5")
-plt.plot(threshold,yvals[2], label = "x = 0.8")
+plt.plot(threshold,yvals[0], label = "x = 0.2", marker = "o", color = "C0")
+plt.plot(threshold,yvals[1], label = "x = 0.5", marker = "o", color = "C1")
+plt.plot(threshold,yvals[2], label = "x = 0.8", marker = "o", color = "C2")
 plt.title("Model-based SVD Prediction using Folding-in")
 plt.xlabel("Folding-in Model Size")
 plt.ylabel("MAE")
-plt.legend()
+plt.legend(loc = "upper right")
 plt.grid()
 plt.show()
 
 plt.figure()
 figure(num=None, figsize=(8, 6), dpi=80, facecolor='w', edgecolor='k')
-plt.plot(threshold,timeVals[0], label = "x = 0.2")
-plt.plot(threshold,timeVals[1], label = "x = 0.5")
-plt.plot(threshold,timeVals[2], label = "x = 0.8")
+plt.plot(threshold,timeVals[0], label = "x = 0.2", marker = "o", color = "C0")
+plt.plot(threshold,timeVals[1], label = "x = 0.5", marker = "o", color = "C1")
+plt.plot(threshold,timeVals[2], label = "x = 0.8", marker = "o", color = "C2")
 plt.title("Throughput vs. Folding-in Basis Size")
 plt.xlabel("Folding-in Model Size")
 plt.ylabel("Throughput (Predictions/sec)")

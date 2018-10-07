@@ -139,7 +139,7 @@ for i in range(percentages.size):
 
 plt.figure()
 figure(num=None, figsize=(8, 6), dpi=80, facecolor='w', edgecolor='k')
-plt.plot(x,percentages)
+plt.plot(x,percentages, marker = "o", color = "C0")
 plt.title("Classification Percentage vs. Number of Basis Images")
 plt.xlabel("Number of Basis Images")
 plt.ylabel("Classification Percentage")
